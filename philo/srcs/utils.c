@@ -6,7 +6,7 @@
 /*   By: dkeraudr <dkeraudr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 22:16:46 by dkeraudr          #+#    #+#             */
-/*   Updated: 2023/09/21 20:14:08 by dkeraudr         ###   ########.fr       */
+/*   Updated: 2023/09/22 22:35:00 by dkeraudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,14 @@ void	ft_print_message(t_philo_thread *philo, char *message, char *color)
 
 	now = ft_get_time() - philo->rules->start_time;
 	pthread_mutex_lock(&philo->philo_main->print);
+	pthread_mutex_lock(&philo->rules->end_mutex);
 	if (philo->philo_main->rules->end)
 	{
 		pthread_mutex_unlock(&philo->philo_main->print);
+		pthread_mutex_unlock(&philo->rules->end_mutex);
 		return ;
 	}
+	pthread_mutex_unlock(&philo->rules->end_mutex);
 	printf("%s%d %d %s\033[0m\n", color,
 		now, philo->id, message);
 	pthread_mutex_unlock(&philo->philo_main->print);

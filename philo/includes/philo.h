@@ -6,7 +6,7 @@
 /*   By: dkeraudr <dkeraudr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 19:37:04 by dkeraudr          #+#    #+#             */
-/*   Updated: 2023/09/21 20:18:29 by dkeraudr         ###   ########.fr       */
+/*   Updated: 2023/09/22 22:31:50 by dkeraudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,15 @@
 
 typedef struct s_rules
 {
-	int	nb_philo;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	time_to_think;
-	int	nb_to_eat;
-	int	start_time;
-	int	end;
+	int				nb_philo;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				time_to_think;
+	int				nb_to_eat;
+	int				start_time;
+	int				end;
+	pthread_mutex_t	end_mutex;
 }	t_rules;
 
 // declare t_philo main to use it in t_philo_thread
@@ -51,6 +52,7 @@ typedef struct s_philo_thread
 	pthread_t		thread;
 	t_rules			*rules;
 	t_philo_main	*philo_main;
+	pthread_mutex_t	last_eat_mutex;
 }	t_philo_thread;
 
 typedef struct s_philo_main
@@ -58,6 +60,7 @@ typedef struct s_philo_main
 	t_rules			*rules;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
+	pthread_mutex_t	done_eating_mutex;
 	t_philo_thread	*philo_threads;
 	pthread_t		check_thread;
 	int				done_eating;

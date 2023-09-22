@@ -6,7 +6,7 @@
 /*   By: dkeraudr <dkeraudr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 19:53:13 by dkeraudr          #+#    #+#             */
-/*   Updated: 2023/09/21 20:30:17 by dkeraudr         ###   ########.fr       */
+/*   Updated: 2023/09/22 22:25:54 by dkeraudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,6 @@ int	parse_philo(t_philo_main *philo, int argc, char **argv)
 	philo->rules->end = 0;
 	philo->rules->time_to_think = (philo->rules->time_to_die
 			- philo->rules->time_to_eat - philo->rules->time_to_sleep) / 2;
+	pthread_mutex_init(&philo->rules->end_mutex, NULL);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: dkeraudr <dkeraudr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 19:30:20 by dkeraudr          #+#    #+#             */
-/*   Updated: 2023/09/21 20:27:32 by dkeraudr         ###   ########.fr       */
+/*   Updated: 2023/09/22 22:33:12 by dkeraudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,17 @@ void	ft_eat_even(t_philo_thread *philo)
 	pthread_mutex_lock(&philo->philo_main->forks[philo->forks[1]]);
 	ft_print_message(philo, "has taken a fork", CYAN);
 	ft_print_message(philo, "is eating", DARK_MAGENTA);
+	pthread_mutex_lock(&philo->last_eat_mutex);
 	philo->last_eat = ft_get_time();
+	pthread_mutex_unlock(&philo->last_eat_mutex);
 	philo->nb_eat++;
 	if (philo->philo_main->rules->nb_to_eat > 0
 		&& philo->nb_eat == philo->philo_main->rules->nb_to_eat)
+	{
+		pthread_mutex_lock(&philo->philo_main->done_eating_mutex);
 		philo->philo_main->done_eating += 1;
+		pthread_mutex_unlock(&philo->philo_main->done_eating_mutex);
+	}
 	usleep(philo->rules->time_to_eat * 1000);
 	pthread_mutex_unlock(&philo->philo_main->forks[philo->forks[0]]);
 	pthread_mutex_unlock(&philo->philo_main->forks[philo->forks[1]]);
@@ -42,11 +48,17 @@ void	ft_eat_odd(t_philo_thread *philo)
 	pthread_mutex_lock(&philo->philo_main->forks[philo->forks[0]]);
 	ft_print_message(philo, "has taken a fork", CYAN);
 	ft_print_message(philo, "is eating", DARK_MAGENTA);
+	pthread_mutex_lock(&philo->last_eat_mutex);
 	philo->last_eat = ft_get_time();
+	pthread_mutex_unlock(&philo->last_eat_mutex);
 	philo->nb_eat++;
 	if (philo->philo_main->rules->nb_to_eat > 0
 		&& philo->nb_eat == philo->philo_main->rules->nb_to_eat)
+	{
+		pthread_mutex_lock(&philo->philo_main->done_eating_mutex);
 		philo->philo_main->done_eating += 1;
+		pthread_mutex_unlock(&philo->philo_main->done_eating_mutex);
+	}
 	usleep(philo->rules->time_to_eat * 1000);
 	pthread_mutex_unlock(&philo->philo_main->forks[philo->forks[1]]);
 	pthread_mutex_unlock(&philo->philo_main->forks[philo->forks[0]]);

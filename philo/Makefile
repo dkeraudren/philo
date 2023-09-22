@@ -36,7 +36,7 @@ $(NAME):	$(OBJS)
 			$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
 
 $(OBJ_DIR)%.o:	$(SRC_DIR)%.c $(INC_DIR)*.h | $(OBJ_DIR)
-				$(CC) $(CFLAGS) -I$(INC_DIR) -c $< -o $@
+				$(CC) $(CFLAGS) -I$(INC_DIR) -c $< -o $@ -g3
 
 $(OBJ_DIR):
 			-mkdir -p $(OBJ_DIR)
