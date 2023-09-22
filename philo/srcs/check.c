@@ -6,7 +6,7 @@
 /*   By: dkeraudr <dkeraudr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 17:14:53 by dkeraudr          #+#    #+#             */
-/*   Updated: 2023/09/22 22:34:04 by dkeraudr         ###   ########.fr       */
+/*   Updated: 2023/09/22 22:43:47 by dkeraudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,18 @@ int	check_done(t_philo_thread *philo)
 		return (1);
 	}
 	pthread_mutex_unlock(&philo->rules->end_mutex);
+	return (0);
+}
+
+int	check_done_eating(t_philo_main *philo_main)
+{
+	pthread_mutex_lock(&philo_main->done_eating_mutex);
+	if (philo_main->done_eating == philo_main->rules->nb_philo)
+	{
+		pthread_mutex_unlock(&philo_main->done_eating_mutex);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo_main->done_eating_mutex);
 	return (0);
 }
 
@@ -42,13 +54,8 @@ void	*check(void *arg)
 			break ;
 		}
 		pthread_mutex_unlock(&philo_main->philo_threads[i].last_eat_mutex);
-		pthread_mutex_lock(&philo_main->done_eating_mutex);
-		if (philo_main->done_eating == philo_main->rules->nb_philo)
-		{
-			pthread_mutex_unlock(&philo_main->done_eating_mutex);
+		if (check_done_eating(philo_main))
 			break ;
-		}
-		pthread_mutex_unlock(&philo_main->done_eating_mutex);
 		i = (i + 1) % philo_main->rules->nb_philo;
 	}
 	pthread_mutex_lock(&philo_main->rules->end_mutex);

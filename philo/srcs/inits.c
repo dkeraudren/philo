@@ -6,7 +6,7 @@
 /*   By: dkeraudr <dkeraudr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 21:52:02 by dkeraudr          #+#    #+#             */
-/*   Updated: 2023/09/22 22:29:55 by dkeraudr         ###   ########.fr       */
+/*   Updated: 2023/09/22 22:44:47 by dkeraudr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int	ft_init_all(t_philo_main *philo_main, int argc, char **argv)
 	philo_main->rules = rules;
 	philo_main->done_eating = 0;
 	pthread_mutex_init(&philo_main->done_eating_mutex, NULL);
+	pthread_mutex_init(&rules->end_mutex, NULL);
 	parse_philo(philo_main, argc, argv);
 	if (!ft_init_forks(philo_main))
 		return (0);
